@@ -1,9 +1,21 @@
-.import/
+# Godot 4+ specific ignores
 .godot/
+.import/
+export_presets.cfg
 
-# AeroBeat Dependencies (Managed by setup_dev.py)
-.testbed/addons/
+# Imported translations (automatically generated from CSV files)
+*.translation
 
-# SECURITY: Block scripts in asset packs (RCE Prevention)
-*.gd
-*.cs
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+# System specific
+.DS_Store
+Thumbs.db
+
+# GodotEnv package/asset workbench
+.testbed/addons/*
+!.testbed/addons/.editorconfig
+.testbed/.addons/

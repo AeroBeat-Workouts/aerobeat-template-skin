@@ -4,3 +4,7 @@ config_version=5
 
 config/name="AeroBeat Skins Testbed"
 config/features=PackedStringArray("4.6", "Forward Plus")
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")

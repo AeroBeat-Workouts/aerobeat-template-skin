@@ -1,0 +1,20 @@
+{
+  "$schema": "https://chickensoft.games/schemas/addons.schema.json",
+  "addons": {
+    // Batch 3 pins the foundational core contract for asset-oriented work.
+    "aerobeat-core": {
+      "url": "git@github.com:AeroBeat-Workouts/aerobeat-core.git",
+      "checkout": "v0.1.0",
+      "subfolder": "/"
+    },
+    // This generic skin template intentionally does not pin a specific feature addon.
+    // Add the concrete aerobeat-feature-* dependency you are skinning when validating a
+    // real downstream skin package so the manifest remains truthful and repo-specific.
+    // GUT drives the repo-local test suite inside the hidden testbed/workbench.
+    "gut": {
+      "url": "git@github.com:bitwes/Gut.git",
+      "checkout": "main",
+      "subfolder": "/addons/gut"
+    }
+  }
+}
