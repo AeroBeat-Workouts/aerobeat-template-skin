@@ -7,8 +7,8 @@ UGC skins (visual replacements) for AeroBeat gameplay elements.
 *   **Type:** Skins (Art)
 *   **License:** **CC BY-NC 4.0**
 *   **Dependencies:**
-    *   `aerobeat-core` (Required foundation for shared skin/resource contracts)
-    *   `aerobeat-feature-*` (Consumer-selected dependency; add the specific feature addon you are skinning to the workbench when validating against a concrete gameplay package)
+    *   `aerobeat-asset-core` (Canonical shared asset/resource contract)
+    *   `aerobeat-feature-*` (Consumer-selected runtime dependency; add the specific feature addon you are skinning when validating against a concrete gameplay package)
 
 ## GodotEnv development flow
 
@@ -31,7 +31,7 @@ cd .testbed
 godotenv addons install
 ```
 
-That installs the pinned `aerobeat-core` foundation plus GUT into `.testbed/addons/`.
+That restores this repo's current dev/test manifest into `.testbed/addons/`. Canonically, skins belong to the Asset lane and should describe their shared contract in terms of `aerobeat-asset-core`.
 
 ### Open the workbench
 
@@ -67,13 +67,15 @@ godot --headless --path .testbed --script addons/gut/gut_cmdln.gd \
 *   `assets/gloves/` - Feature-specific glove or controller skin resources.
 *   `assets/targets/` - Skinned target visuals.
 *   `assets/obstacles/` - Skinned obstacle visuals and related resources.
+*   `assets/trails/` - Optional trail visuals for the locked v1 gameplay-facing asset set.
 
 ## Validation notes
 
 - `.testbed/addons.jsonc` is the committed dev/test dependency contract.
-- The manifest pins `aerobeat-core` to `v0.1.0` and GUT to `main`.
+- The current manifest still pins the transition-era `aerobeat-core` package key to `v0.1.0` alongside GUT `main`. Canonical lane ownership is `aerobeat-asset-core`.
 - Repo-local unit tests live under `.testbed/tests/`.
-- This template is root-packaged (`subfolder: "/"`) and does not use a `.testbed/src` bridge. The committed manifest intentionally pins only `aerobeat-core`; the feature addon remains an explicit consumer choice because this generic template cannot truthfully hard-code one feature contract for every downstream skin repo.
+- This template is root-packaged (`subfolder: "/"`) and does not use a `.testbed/src` bridge. The committed manifest intentionally keeps only the transition-era shared core pin plus GUT; the feature addon remains an explicit consumer choice because this generic template cannot truthfully hard-code one feature contract for every downstream skin repo.
+- The locked v1 gameplay-facing asset types are `gloves`, `targets`, `obstacles`, and `trails`. Coach-facing asset types belong in package coaching configuration, not this generic skin template.
 
 ## Notes
 
