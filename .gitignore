@@ -15,6 +15,9 @@ mono_crash.*.json
 .DS_Store
 Thumbs.db
 
+# Godot sidecar metadata
+*.uid
+
 # GodotEnv package/asset workbench
 .testbed/addons/*
 !.testbed/addons/.editorconfig

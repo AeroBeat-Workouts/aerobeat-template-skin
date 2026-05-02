@@ -1,10 +1,10 @@
 {
   "$schema": "https://chickensoft.games/schemas/addons.schema.json",
   "addons": {
-    // Batch 3 pins the foundational core contract for asset-oriented work.
-    "aerobeat-core": {
-      "url": "git@github.com:AeroBeat-Workouts/aerobeat-core.git",
-      "checkout": "v0.1.0",
+    // Skin-template bootstrap pins the shared asset/resource contract.
+    "aerobeat-asset-core": {
+      "url": "git@github.com:AeroBeat-Workouts/aerobeat-asset-core.git",
+      "checkout": "main",
       "subfolder": "/"
     },
     // This generic skin template intentionally does not pin a specific feature addon.

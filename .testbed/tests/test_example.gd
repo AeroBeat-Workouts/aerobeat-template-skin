@@ -1,7 +1,40 @@
 extends GutTest
 
-func test_sanity_check():
-	assert_eq(1, 1, "Math should still work")
+const README_PATH := "../README.md"
+const PLUGIN_CFG_PATH := "../plugin.cfg"
+const ADDONS_MANIFEST_PATH := "addons.jsonc"
+const EXPECTED_PLUGIN_DESCRIPTION := "Template for AeroBeat internal skin repos. Shared presentation variants built on aerobeat-asset-core for current v1 work."
 
-func test_testbed_project_exists():
-	assert_true(FileAccess.file_exists("res://project.godot"), "The hidden workbench project should exist")
+func _read_repo_file(relative_path: String) -> String:
+	var absolute_path := ProjectSettings.globalize_path("res://%s" % relative_path)
+	assert_true(FileAccess.file_exists(absolute_path), "Expected repo file to exist: %s" % absolute_path)
+	var file := FileAccess.open(absolute_path, FileAccess.READ)
+	assert_true(file != null, "Expected repo file to open: %s" % absolute_path)
+	return file.get_as_text()
+
+func test_readme_keeps_v1_internal_skin_template_truth() -> void:
+	var readme_text := _read_repo_file(README_PATH)
+	assert_true(readme_text.contains("official template for creating **internal skin** repositories"), "README should state that this repo is an internal skin template")
+	assert_true(readme_text.contains("PC community first"), "README should preserve PC-first release wording")
+	assert_true(readme_text.contains("Boxing and Flow"), "README should preserve the locked v1 feature slice")
+	assert_true(readme_text.contains("camera only"), "README should preserve camera-only official gameplay input wording")
+	assert_true(readme_text.contains("internal/system skin work"), "README should preserve the downscoped internal-only skin stance")
+	assert_true(readme_text.contains("UGC or package-local gameplay skin swap story"), "README should explicitly reject the old UGC/package-local skin framing")
+
+func test_plugin_cfg_description_stays_template_specific() -> void:
+	var config := ConfigFile.new()
+	var error := config.load(ProjectSettings.globalize_path("res://%s" % PLUGIN_CFG_PATH))
+	assert_eq(error, OK, "plugin.cfg should parse cleanly")
+	assert_eq(config.get_value("plugin", "name", ""), "AeroBeat Internal Skin Template", "plugin.cfg name should stay stable")
+	assert_eq(
+		config.get_value("plugin", "description", ""),
+		EXPECTED_PLUGIN_DESCRIPTION,
+		"plugin.cfg description should remain aligned with the template's narrow v1 skin-lane contract"
+	)
+
+func test_addons_manifest_keeps_expected_dependencies_only() -> void:
+	var manifest_text := _read_repo_file(ADDONS_MANIFEST_PATH)
+	assert_true(manifest_text.contains('"aerobeat-asset-core"'), "addons manifest should pin aerobeat-asset-core")
+	assert_true(manifest_text.contains('"checkout": "main"'), "addons manifest should document the honest main-branch baseline for aerobeat-asset-core")
+	assert_true(manifest_text.contains('"gut"'), "addons manifest should pin gut for repo-local tests")
+	assert_false(manifest_text.contains('"aerobeat-core"'), "addons manifest should not reintroduce stale aerobeat-core drift")

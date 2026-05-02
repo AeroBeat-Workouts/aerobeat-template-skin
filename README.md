@@ -1,14 +1,24 @@
-# AeroBeat Skin Template
+# AeroBeat Internal Skin Template
 
-UGC skins (visual replacements) for AeroBeat gameplay elements.
+This is the official template for creating **internal skin** repositories within the current AeroBeat v1 architecture.
+
+It should be read against the locked product direction from `aerobeat-docs`:
+
+- **Primary release target:** PC community first
+- **Official v1 gameplay features:** Boxing and Flow
+- **Official v1 gameplay input:** camera only
+- **UI input stance:** mouse and touch remain valid for UI navigation, without implying equal-status gameplay input support
+- **Asset-lane ownership:** shared internal skin contracts belong to the asset lane through `aerobeat-asset-core`
+- **Downscoped customization truth:** this template is for internal/system skin work, not for reviving the older UGC or package-local gameplay skin swap story
 
 ## 📋 Repository Details
 
-*   **Type:** Skins (Art)
-*   **License:** **CC BY-NC 4.0**
-*   **Dependencies:**
-    *   `aerobeat-asset-core` (Canonical shared asset/resource contract)
-    *   `aerobeat-feature-*` (Consumer-selected runtime dependency; add the specific feature addon you are skinning when validating against a concrete gameplay package)
+- **Type:** Internal skin template
+- **License:** **CC BY-NC 4.0** (Attribution-NonCommercial)
+- **Dependency contract:**
+  - `aerobeat-asset-core` — required shared asset/resource contract for the asset lane
+  - `aerobeat-feature-*` — optional consumer-selected runtime dependency when validating a concrete skin against a specific feature such as Boxing or Flow
+  - additional adjacent lane/core repos only when a concrete internal skin repo truly consumes them
 
 ## GodotEnv development flow
 
@@ -31,7 +41,7 @@ cd .testbed
 godotenv addons install
 ```
 
-That restores this repo's current dev/test manifest into `.testbed/addons/`. Canonically, skins belong to the Asset lane and should describe their shared contract in terms of `aerobeat-asset-core`.
+That restores this repo's current dev/test manifest into `.testbed/addons/`. Canonically, this template should keep the baseline manifest narrow: `aerobeat-asset-core` plus test-only tooling.
 
 ### Open the workbench
 
@@ -41,7 +51,7 @@ From the repo root:
 godot --editor --path .testbed
 ```
 
-Use this `.testbed/` project as the canonical direct-development and import-validation surface for skin work.
+Use this `.testbed/` project as the canonical direct-development and import-validation surface for internal skin work.
 
 ### Import smoke check
 
@@ -64,20 +74,22 @@ godot --headless --path .testbed --script addons/gut/gut_cmdln.gd \
 
 ## 📂 Structure
 
-*   `assets/gloves/` - Feature-specific glove or controller skin resources.
-*   `assets/targets/` - Skinned target visuals.
-*   `assets/obstacles/` - Skinned obstacle visuals and related resources.
-*   `assets/trails/` - Optional trail visuals for the locked v1 gameplay-facing asset set.
+- `assets/gloves/` - Skinned glove or hand-target presentation assets for the retained v1 feature set.
+- `assets/targets/` - Internal target presentation variants for concrete features such as Boxing or Flow.
+- `assets/obstacles/` - Shared obstacle presentation variants that stay aligned with current feature contracts.
+- `assets/trails/` - Optional trail and motion-accent visuals for gameplay-facing internal polish.
 
 ## Validation notes
 
 - `.testbed/addons.jsonc` is the committed dev/test dependency contract.
-- The current manifest still pins the transition-era `aerobeat-core` package key to `v0.1.0` alongside GUT `main`. Canonical lane ownership is `aerobeat-asset-core`.
-- Repo-local unit tests live under `.testbed/tests/`.
-- This template is root-packaged (`subfolder: "/"`) and does not use a `.testbed/src` bridge. The committed manifest intentionally keeps only the transition-era shared core pin plus GUT; the feature addon remains an explicit consumer choice because this generic template cannot truthfully hard-code one feature contract for every downstream skin repo.
-- The locked v1 gameplay-facing asset types are `gloves`, `targets`, `obstacles`, and `trails`. Coach-facing asset types belong in package coaching configuration, not this generic skin template.
+- The canonical template manifest for this repo is `aerobeat-asset-core` + `gut`.
+- Do **not** restore a universal `aerobeat-core` baseline here. Add a concrete `aerobeat-feature-*` repo only when a real downstream skin package needs feature-specific validation.
+- Repo-local unit tests live under `.testbed/tests/` and currently validate repo metadata plus the manifest contract.
+- This template is root-packaged (`subfolder: "/"`) and does not use a `.testbed/src` bridge; add real content directly under the repo root package boundary.
+- Coach-facing asset surfaces belong in coaching/content lanes, not this generic skin template.
 
 ## Notes
 
-- When validating a real skin against a concrete feature, add that specific `aerobeat-feature-*` repo to `.testbed/addons.jsonc` rather than cloning it ad hoc into `addons/`.
-- This preserves the GodotEnv contract while making the old manual feature dependency nuance explicit instead of implicit.
+- These skins are intended for internal AeroBeat assemblies and controlled product presentation surfaces.
+- Boxing and Flow are the retained gameplay-facing examples for current v1 truth; non-retained feature examples should not be taught as baseline template scope.
+- Keep feature-specific runtime dependencies explicit and selective rather than pretending one universal feature baseline fits every skin repo.
