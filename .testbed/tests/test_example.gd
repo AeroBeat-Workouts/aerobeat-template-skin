@@ -3,7 +3,9 @@ extends GutTest
 const README_PATH := "../README.md"
 const PLUGIN_CFG_PATH := "../plugin.cfg"
 const ADDONS_MANIFEST_PATH := "addons.jsonc"
+const PROJECT_GODOT_PATH := "project.godot"
 const EXPECTED_PLUGIN_DESCRIPTION := "Template for AeroBeat internal skin repos. Shared presentation variants built on aerobeat-asset-core for current v1 work."
+const EXPECTED_TESTBED_NAME := "AeroBeat Internal Skin Testbed"
 
 func _read_repo_file(relative_path: String) -> String:
 	var absolute_path := ProjectSettings.globalize_path("res://%s" % relative_path)
@@ -38,3 +40,13 @@ func test_addons_manifest_keeps_expected_dependencies_only() -> void:
 	assert_true(manifest_text.contains('"checkout": "main"'), "addons manifest should document the honest main-branch baseline for aerobeat-asset-core")
 	assert_true(manifest_text.contains('"gut"'), "addons manifest should pin gut for repo-local tests")
 	assert_false(manifest_text.contains('"aerobeat-core"'), "addons manifest should not reintroduce stale aerobeat-core drift")
+
+func test_hidden_testbed_name_stays_internal_template_specific() -> void:
+	var config := ConfigFile.new()
+	var error := config.load(ProjectSettings.globalize_path("res://%s" % PROJECT_GODOT_PATH))
+	assert_eq(error, OK, "project.godot should parse cleanly")
+	assert_eq(
+		config.get_value("application", "config/name", ""),
+		EXPECTED_TESTBED_NAME,
+		"hidden workbench name should stay aligned with the internal skin template contract"
+	)
